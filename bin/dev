@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+
+dir = os.path.dirname(os.path.realpath(__file__))
+app_path = os.path.abspath(os.path.join(dir, '..'))
+sys.path.append(app_path)
+
+from app import application
+application.run(debug=True)

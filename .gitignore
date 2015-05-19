@@ -1,0 +1,6 @@
+*.py[co]
+*.sqlite3
+.DS_Store
+static/
+assets/build/
+node_modules/

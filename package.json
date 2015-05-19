@@ -1,0 +1,12 @@
+{
+  "name": "pore-sizer",
+  "version": "0.1.0",
+  "description": "A tool to analyze pore size distributions in porous media.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Brennan Spellacy <brennanspellacy@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+  }
+}
