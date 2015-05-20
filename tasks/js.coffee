@@ -9,11 +9,9 @@ browserifySettings =
   debug: true
   transform: [coffeeReact]
 
-buildDir = './assets/build'
-
 gulp.task 'js', ->
   browserify(browserifySettings)
     .bundle()
     .pipe(source('app.js'))
     .pipe(buffer())
-    .pipe(gulp.dest(buildDir))
+    .pipe(gulp.dest('./static'))
