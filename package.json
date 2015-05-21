@@ -8,7 +8,9 @@
   "author": "Brennan Spellacy <brennanspellacy@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "react": "^0.13.3"
+    "papaparse": "^4.1.1",
+    "react": "^0.13.3",
+    "reflux": "^0.2.7"
   },
   "devDependencies": {
     "browserify": "^10.2.0",
