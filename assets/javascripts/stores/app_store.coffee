@@ -1,6 +1,6 @@
 Flux = require 'reflux'
 Papa = require 'papaparse'
-AppActions = require '../actions/app_actions.coffee'
+AppActions = require '../actions/app_actions'
 
 AppStore = Flux.createStore
   listenables: AppActions
@@ -10,7 +10,6 @@ AppStore = Flux.createStore
     @PARSER_SETTINGS =
       dynamicTyping: true
       complete: (results, _) =>
-        console.log results
         @experimentalData = results.data
         @trigger(@experimentalData)
 

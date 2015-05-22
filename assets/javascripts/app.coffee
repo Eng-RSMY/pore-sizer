@@ -1,8 +1,8 @@
 Flux = require 'reflux'
 window.React = require 'react'
-AppStore = require './stores/app_store.coffee'
-AppActions = require './actions/app_actions.coffee'
-GraphPanel = require './components/graph_panel.cjsx'
+AppStore = require './stores/app_store'
+AppActions = require './actions/app_actions'
+GraphPanel = require './components/graph_panel'
 
 window.PoreSizer = {}
 
@@ -30,6 +30,7 @@ PoreSizer.App = React.createClass
     </div>
 
   onExperimentalDataChange: (data) ->
+    debugger
     @setState(experimentalData: data)
 
   _onUploadExperimentalData: (evt) ->

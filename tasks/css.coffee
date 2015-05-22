@@ -1,7 +1,7 @@
 gulp = require 'gulp'
-concat = require 'gulp-concat'
+sass = require 'gulp-sass'
 
 gulp.task 'css', ->
-  gulp.src('./assets/stylesheets/*.css')
-    .pipe(concat('app.css'))
+  gulp.src('./assets/stylesheets/app.scss')
+    .pipe(sass())
     .pipe(gulp.dest('./static'))
