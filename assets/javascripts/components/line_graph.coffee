@@ -9,17 +9,7 @@ module.exports = class LineGraph
     right: 20
 
   constructor: (@selector, @data) ->
-    @_render()
-
-  _render: ->
     @_calculateDimensions()
-    @_calculateScales()
-    @_buildAxes()
-
-    @line = d3.svg.line()
-      .x((d) => @_xScale(d[0]))
-      .y((d) => @graphHeight - @_yScale(d[0]))
-
     @svg = d3.select(@selector)
       .append('svg')
         .classed(graph: true)
@@ -27,6 +17,30 @@ module.exports = class LineGraph
         .attr('height', @height)
       .append('g')
         .attr('transform', "translate(#{@MARGIN.left}, #{@MARGIN.top})")
+
+    @_render()
+
+  update: (newData) ->
+    @data = newData
+    @_calculateScales()
+    @_buildAxes()
+    @_buildLine()
+
+    @svg.select('.x.axis')
+      .transition()
+      .call(@_xAxis)
+    @svg.select('.y.axis')
+      .transition()
+      .call(@_yAxis)
+    @svg.select('.line')
+      .datum(@data)
+      .transition()
+      .attr('d', @line)
+
+  _render: ->
+    @_calculateScales()
+    @_buildAxes()
+    @_buildLine()
 
     @svg.append('g')
       .classed(x: true, axis: true)
@@ -36,7 +50,7 @@ module.exports = class LineGraph
     @svg.append('g')
       .classed(y: true, axis: true)
       .call(@_yAxis)
-    console.log @data
+
     @svg.append('path')
       .datum(@data)
       .classed(line: true)
@@ -50,16 +64,21 @@ module.exports = class LineGraph
     @graphHeight = @height - (@MARGIN.top + @MARGIN.bottom)
 
   _calculateScales: ->
-    xMax = if @data.length > 0 then d3.max((d) -> d[0]) else @graphWidth
-    yMax = if @data.length > 0 then d3.max((d) -> d[1]) else @graphHeight
+    xMax = if @data.length > 0 then d3.max(@data, (d) -> d[0]) else @graphWidth
+    yMax = if @data.length > 0 then d3.max(@data, (d) -> d[1]) else @graphHeight
 
     @_xScale = d3.scale.linear()
-      .domain([0, @graphWidth])
-      .range([0, xMax])
+      .domain([0, xMax])
+      .range([0, @graphWidth])
 
     @_yScale = d3.scale.linear()
-      .domain([0, @graphHeight])
-      .range([yMax, 0])
+      .domain([0, yMax])
+      .range([@graphHeight, 0])
+
+  _buildLine: ->
+    @line = d3.svg.line()
+      .x((d) => @_xScale(d[0]))
+      .y((d) => @_yScale(d[1]))
 
   _buildAxes: ->
     @_xAxis = d3.svg.axis()

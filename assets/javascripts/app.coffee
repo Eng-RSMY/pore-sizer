@@ -1,9 +1,13 @@
 Flux = require 'reflux'
-window.React = require 'react'
+React = require 'react'
 AppStore = require './stores/app_store'
 AppActions = require './actions/app_actions'
 GraphPanel = require './components/graph_panel'
+TopologyPanel = require './components/topology_panel'
+GeometryPanel = require './components/geometry_panel'
+ParametersStore = require './stores/parameter_store'
 
+window.React = React
 window.PoreSizer = {}
 
 PoreSizer.App = React.createClass
@@ -14,23 +18,23 @@ PoreSizer.App = React.createClass
     experimentalData: []
 
   render: ->
-    <div className='ui two column page grid'>
-      <div className='three wide column' />
-      <div className='ui grid'>
-        <div className='row'>
-          <label htmlFor='fileUpload' className='ui icon button'>
-            <i className='file icon'></i>
-            Upload a CSV file
-          </label>
-          <input type='file' id='fileUpload' style={{display: 'none'}}
-                 onChange={@_onUploadExperimentalData} />
-        </div>
-        <GraphPanel experimentalData={@state.experimentalData} />
+    <div className='ui page grid'>
+      <div className='row'>
+        <label htmlFor='fileUpload' className='ui icon button'>
+          <i className='file icon'></i>
+          Upload a CSV file
+        </label>
+        <input type='file' id='fileUpload' style={{display: 'none'}}
+               onChange={@_onUploadExperimentalData} />
+      </div>
+      <GraphPanel experimentalData={@state.experimentalData} />
+      <div className='two column row'>
+        <TopologyPanel store={ParametersStore} />
+        <GeometryPanel store={ParametersStore} />
       </div>
     </div>
 
   onExperimentalDataChange: (data) ->
-    debugger
     @setState(experimentalData: data)
 
   _onUploadExperimentalData: (evt) ->
