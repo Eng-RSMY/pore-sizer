@@ -5,6 +5,7 @@ AppActions = Flux.createActions([
   'updatePhysics'
   'updateTopology'
   'updateGeometry'
+  'validate'
 ])
 
 module.exports = AppActions

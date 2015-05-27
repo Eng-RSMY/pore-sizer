@@ -4,17 +4,18 @@ AppStore = require './stores/app_store'
 AppActions = require './actions/app_actions'
 GraphPanel = require './components/graph_panel'
 PhasePanel = require './components/phase_panel'
+{validate} = require './actions/parameter_actions'
 PhysicsPanel = require './components/physics_panel'
 TopologyPanel = require './components/topology_panel'
 GeometryPanel = require './components/geometry_panel'
-ParametersStore = require './stores/parameter_store'
+ParameterStore = require './stores/parameter_store'
 
 window.React = React
 window.PoreSizer = {}
 
 PoreSizer.App = React.createClass
 
-  mixins: [Flux.listenTo(AppStore, 'onExperimentalDataChange')],
+  mixins: [Flux.listenTo(AppStore, '_onExperimentalDataChange')],
 
   getInitialState: ->
     experimentalData: []
@@ -30,17 +31,17 @@ PoreSizer.App = React.createClass
                onChange={@_onUploadExperimentalData} />
       </div>
       <GraphPanel experimentalData={@state.experimentalData} />
-      <div className='two column row'>
-        <TopologyPanel store={ParametersStore} />
-        <GeometryPanel store={ParametersStore} />
+      <div className='two column equal height row'>
+        <TopologyPanel store={ParameterStore} />
+        <GeometryPanel store={ParameterStore} />
       </div>
-      <div className='two column row'>
-        <PhasePanel store={ParametersStore} />
-        <PhysicsPanel store={ParametersStore} />
+      <div className='two column equal height row'>
+        <PhasePanel store={ParameterStore} />
+        <PhysicsPanel store={ParameterStore} />
       </div>
     </div>
 
-  onExperimentalDataChange: (data) ->
+  _onExperimentalDataChange: (data) ->
     @setState(experimentalData: data)
 
   _onUploadExperimentalData: (evt) ->
