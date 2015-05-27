@@ -1,10 +1,10 @@
 React = require 'react'
 {updateGeometry} = require '../actions/parameter_actions'
 
-GeometryPanel = React.createClass
+PhysicsPanel = React.createClass
   render: ->
     <div className='ui eight wide column form'>
-      <h4 className="ui top attached header">Geometry</h4>
+      <h4 className="ui top attached header">Physics</h4>
       <div className='ui fluid bottom attached segment'>
 
         <div className='field'>
@@ -38,4 +38,4 @@ GeometryPanel = React.createClass
       </div>
     </div>
 
-module.exports = GeometryPanel
+module.exports = PhysicsPanel

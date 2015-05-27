@@ -12,6 +12,7 @@ ParameterStore = Flux.createStore
       physics: null
 
   onUpdatePhase: (newPhase) ->
+    console.log newPhase
     @parameters.phase = newPhase
 
   onUpdatePhysics: (newPhysics) ->

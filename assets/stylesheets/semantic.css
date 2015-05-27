@@ -5598,7 +5598,7 @@ a.ui.inverted.yellow.header:hover {
              Icon
 *******************************/
 
-@font-face {
+/*@font-face {
   font-family: 'Icons';
   src: url("themes/default/assets/fonts/icons.eot");
   src: url("themes/default/assets/fonts/icons.eot?#iefix") format('embedded-opentype'), url("themes/default/assets/fonts/icons.woff2") format('woff'), url("themes/default/assets/fonts/icons.woff") format('woff'), url("themes/default/assets/fonts/icons.ttf") format('truetype'), url("themes/default/assets/fonts/icons.svg#icons") format('svg');
@@ -5607,7 +5607,7 @@ a.ui.inverted.yellow.header:hover {
   font-variant: normal;
   text-decoration: inherit;
   text-transform: none;
-}
+}*/
 
 i.icon {
   display: inline-block;

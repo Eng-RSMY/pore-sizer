@@ -3,6 +3,8 @@ React = require 'react'
 AppStore = require './stores/app_store'
 AppActions = require './actions/app_actions'
 GraphPanel = require './components/graph_panel'
+PhasePanel = require './components/phase_panel'
+PhysicsPanel = require './components/physics_panel'
 TopologyPanel = require './components/topology_panel'
 GeometryPanel = require './components/geometry_panel'
 ParametersStore = require './stores/parameter_store'
@@ -31,6 +33,10 @@ PoreSizer.App = React.createClass
       <div className='two column row'>
         <TopologyPanel store={ParametersStore} />
         <GeometryPanel store={ParametersStore} />
+      </div>
+      <div className='two column row'>
+        <PhasePanel store={ParametersStore} />
+        <PhysicsPanel store={ParametersStore} />
       </div>
     </div>
 

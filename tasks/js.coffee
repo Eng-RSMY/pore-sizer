@@ -7,7 +7,7 @@ coffeeReact = require 'coffee-reactify'
 browserifySettings =
   entries: './assets/javascripts/app.coffee'
   debug: true
-  extensions: ['.cjsx', '.coffee']
+  extensions: ['.coffee']
   transform: [coffeeReact]
 
 gulp.task 'js', ->
