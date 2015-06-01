@@ -5,7 +5,5 @@ requireDir './tasks'
 
 gulp.task 'default', ['js', 'css']
 
-gulp.task 'watch', ->
-  gulp.watch('./assets/javascripts/**/*.cjsx', ['js'])
-  gulp.watch('./assets/javascripts/**/*.coffee', ['js'])
+gulp.task 'watch', ['js:watchify'], ->
   gulp.watch('./assets/stylesheets/*.scss', ['css'])
