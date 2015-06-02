@@ -1,4 +1,3 @@
-Joi = require 'joi'
 Flux = require 'reflux'
 schema = require '../lib/schema'
 ParameterActions = require '../actions/parameter_actions'
@@ -9,10 +8,19 @@ ParameterStore = Flux.createStore
   init: ->
     @schema = schema
     @parameters =
-      topology: null
-      geometry: null
-      phase: null
-      physics: null
+      topology: {}
+      geometry: {}
+      phase: {}
+      physics: {}
+
+    @errors =
+      topology: {}
+      geometry: {}
+      phase: {}
+      physics: {}
+
+  getInitialState: ->
+    @errors
 
   onUpdatePhase: (newPhase) ->
     @parameters.phase = newPhase
@@ -27,8 +35,8 @@ ParameterStore = Flux.createStore
     @parameters.geometry = newGeometry
 
   onValidate: ->
-    Joi.validate @parameters, @schema, (err, value) =>
-      debugger
+    result = Joi.validate(@parameters, @schema, {abortEarly: false})
+    _.each(result.error.details, (d) => _.set(@errors, d.path, d.message))
+    @trigger(@errors)
 
-window.log = -> console.log ParameterStore.parameters
 module.exports = ParameterStore

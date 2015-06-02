@@ -10,15 +10,11 @@ TopologyPanel = require './components/topology_panel'
 GeometryPanel = require './components/geometry_panel'
 ParameterStore = require './stores/parameter_store'
 
-window.React = React
-window.PoreSizer = {}
-
-PoreSizer.App = React.createClass
-
-  mixins: [Flux.listenTo(AppStore, '_onExperimentalDataChange')],
-
-  getInitialState: ->
-    experimentalData: []
+module.exports = React.createClass
+  mixins: [
+    Flux.connect(AppStore, 'experimentalData')
+    Flux.connect(ParameterStore, 'errors')
+  ]
 
   render: ->
     <div className='ui page grid'>
@@ -29,20 +25,19 @@ PoreSizer.App = React.createClass
         </label>
         <input type='file' id='fileUpload' style={{display: 'none'}}
                onChange={@_onUploadExperimentalData} />
+
+        <div className='ui teal button' onClick={validate}>Run</div>
       </div>
       <GraphPanel experimentalData={@state.experimentalData} />
       <div className='two column equal height row'>
-        <TopologyPanel store={ParameterStore} />
-        <GeometryPanel store={ParameterStore} />
+        <TopologyPanel errors={@state.errors.topology} />
+        <GeometryPanel errors={@state.errors.geometry} />
       </div>
       <div className='two column equal height row'>
-        <PhasePanel store={ParameterStore} />
-        <PhysicsPanel store={ParameterStore} />
+        <PhasePanel errors={@state.errors.phase} />
+        <PhysicsPanel errors={@state.errors.physics} />
       </div>
     </div>
-
-  _onExperimentalDataChange: (data) ->
-    @setState(experimentalData: data)
 
   _onUploadExperimentalData: (evt) ->
     file = evt.target.files[0]

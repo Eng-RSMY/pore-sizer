@@ -3,15 +3,20 @@ React = require 'react'
 
 PhasePanel = React.createClass
   getInitialState: ->
-    phaseTypeSelected: 'air'
+    type: 'air'
+    surfaceTension: null
+    contactAngle: null
+
+  componentWillMount: ->
+    updatePhase(@state)
 
   render: ->
     <div className='ui eight wide column form'>
       <h4 className="ui top attached header">Phase</h4>
       <div className='ui fluid bottom attached segment' onChange={@_onChange}>
-        <div className='field'>
+        <div className={if @props.errors.type then 'field error' else 'field'}>
           <label>Phase Type</label>
-          <select ref='phaseType' className='ui dropdown' onChange={@_onPhaseChange}>
+          <select name='type' className='ui dropdown'>
             <option value='air'>Air</option>
             <option value='custom'>Custom</option>
             <option value='mercury'>Mercury</option>
@@ -19,20 +24,20 @@ PhasePanel = React.createClass
           </select>
         </div>
 
-        {if @state.phaseTypeSelected == 'custom'
+        {if @state.type == 'custom'
           <div className='two fields'>
-            <div className='field'>
+            <div className={if @props.errors.surfaceTension then 'field error' else 'field'}>
               <label>Surface Tension</label>
               <div className='ui right labeled input'>
-                <input ref='surfaceTension' type='text' placeholder='Ex. 0.1' />
+                <input name='surfaceTension' type='text' placeholder='Ex. 0.1' />
                 <div className='ui label'>N/m</div>
               </div>
             </div>
-            <div className='field'>
+            <div className={if @props.errors.contactAngle then 'field error' else 'field'}>
               <label>Contact Angle</label>
               <div className='ui right labeled input'>
-                <input ref='contactAngle' type='text' placeholder='Ex. 0.1' />
-                <div className='ui label'>radians</div>
+                <input name='contactAngle' type='text' placeholder='Ex. 0.1' />
+                <div className='ui label'>degrees</div>
               </div>
             </div>
           </div>
@@ -40,22 +45,11 @@ PhasePanel = React.createClass
       </div>
     </div>
 
-  _onChange: ->
-    phase =
-      type: @state.phaseTypeSelected
-      surfaceTension: null
-      contactAngle: null
-
-    if phase.type == 'custom'
-      phase.surfaceTension = parseFloat @refs.surfaceTension.getDOMNode().value
-      phase.contactAngle = parseFloat @refs.contactAngle.getDOMNode().value
-
-    updatePhase(phase)
-
-  _onPhaseChange: (evt) ->
-    evt.stopPropagation()
-    phaseTypeNode = @refs.phaseType.getDOMNode()
-    phaseTypeSelected = phaseTypeNode.options[phaseTypeNode.selectedIndex].value
-    @setState(phaseTypeSelected: phaseTypeSelected, => @_onChange())
+  _onChange: (evt) ->
+    newState = do ->
+      state = {}
+      state[evt.target.name] = evt.target.value
+      state
+    @setState(newState, => updatePhase(@state))
 
 module.exports = PhasePanel

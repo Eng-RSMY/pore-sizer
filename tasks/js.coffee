@@ -1,19 +1,27 @@
 gulp = require 'gulp'
 {log} = require 'gulp-util'
-source = require 'vinyl-source-stream'
 buffer = require 'vinyl-buffer'
+source = require 'vinyl-source-stream'
 watchify = require 'watchify'
 browserify = require 'browserify'
 coffeeReact = require 'coffee-reactify'
+dependencies = Object.keys(require('../package.json').dependencies)
 
-b = browserify
-  entries: './assets/javascripts/app.coffee'
+appBundle = browserify
   debug: true
-  noparse: ['lodash', 'd3', 'papaparse']
   extensions: ['.coffee']
   transform: [coffeeReact]
 
-w = watchify(b)
+dependencies.forEach (dep) -> appBundle.external(dep)
+
+w = watchify(appBundle)
+
+vendorBundle = browserify
+  debug: false
+  insertGlobals: true
+  detectGlobals: true
+
+dependencies.forEach (dep) -> vendorBundle.require(dep, expose: dep)
 
 rebundle = ->
   w.bundle()
@@ -23,7 +31,7 @@ rebundle = ->
     .pipe(gulp.dest('./static'))
 
 gulp.task 'js', ->
-  browserify(browserifySettings)
+  appBundle.require('./assets/javascripts/app.coffee', expose: 'poresizer')
     .bundle()
     .pipe(source('app.js'))
     .pipe(buffer())
@@ -33,3 +41,9 @@ gulp.task 'js:watchify', ->
   w.on('update', rebundle)
     .on('log', (message) -> log("[Watchify] #{message}"))
   rebundle()
+
+gulp.task 'js:vendor', ->
+  vendorBundle
+    .bundle()
+    .pipe(source('vendor.js'))
+    .pipe(gulp.dest('./static'))

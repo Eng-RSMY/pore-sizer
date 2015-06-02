@@ -1,7 +1,6 @@
 d3 = require 'd3'
 
 module.exports = class LineGraph
-
   MARGIN:
     top: 20
     bottom: 20

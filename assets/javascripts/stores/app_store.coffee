@@ -1,5 +1,4 @@
 Flux = require 'reflux'
-Papa = require 'papaparse'
 AppActions = require '../actions/app_actions'
 
 AppStore = Flux.createStore
@@ -12,6 +11,9 @@ AppStore = Flux.createStore
       complete: (results, _) =>
         @experimentalData = results.data
         @trigger(@experimentalData)
+
+  getInitialState: ->
+    @experimentalData
 
   onUploadExperimentalData: (file) ->
     Papa.parse(file, @PARSER_SETTINGS)

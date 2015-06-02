@@ -3,11 +3,14 @@
   <head>
     <title></title>
     <link rel='stylesheet' href='{{ url_for("static", filename="app.css") }}'>
+    <script src='{{ url_for("static", filename="vendor.js") }}'></script>
     <script src='{{ url_for("static", filename="app.js") }}'></script>
   </head>
   <body>
   </body>
   <script>
-    React.render(React.createElement(PoreSizer.App), document.body);
+    var React = require('react');
+    var PoreSizer = require('poresizer')
+    React.render(React.createElement(PoreSizer), document.body);
   </script>
 </html>
