@@ -12,33 +12,35 @@ appBundle = browserify
   extensions: ['.coffee']
   transform: [coffeeReact]
 
-dependencies.forEach (dep) -> appBundle.external(dep)
-
-w = watchify(appBundle)
-
 vendorBundle = browserify
   debug: false
   insertGlobals: true
   detectGlobals: true
 
-dependencies.forEach (dep) -> vendorBundle.require(dep, expose: dep)
+appBundle.require('./assets/javascripts/app.coffee', expose: 'poresizer')
+
+dependencies.forEach (dep) ->
+  appBundle.external(dep)
+  vendorBundle.require(dep, expose: dep)
 
 rebundle = ->
-  w.bundle()
+  watchify(appBundle)
+    .bundle()
     .on('error', (err) -> log(err))
     .pipe(source('app.js'))
     .pipe(buffer())
     .pipe(gulp.dest('./static'))
 
 gulp.task 'js', ->
-  appBundle.require('./assets/javascripts/app.coffee', expose: 'poresizer')
+  appBundle
     .bundle()
     .pipe(source('app.js'))
     .pipe(buffer())
     .pipe(gulp.dest('./static'))
 
 gulp.task 'js:watchify', ->
-  w.on('update', rebundle)
+  watchify(appBundle)
+    .on('update', rebundle)
     .on('log', (message) -> log("[Watchify] #{message}"))
   rebundle()
 

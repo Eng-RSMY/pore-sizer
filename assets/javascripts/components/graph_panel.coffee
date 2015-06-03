@@ -1,3 +1,4 @@
+_ = require 'lodash'
 React = require 'react'
 Histogram = require './histogram'
 LineGraph = require './line_graph'

@@ -1,3 +1,5 @@
+_ = require 'lodash'
+Joi = require 'joi'
 Flux = require 'reflux'
 schema = require '../lib/schema'
 ParameterActions = require '../actions/parameter_actions'
@@ -8,35 +10,50 @@ ParameterStore = Flux.createStore
   init: ->
     @schema = schema
     @parameters =
-      topology: {}
-      geometry: {}
-      phase: {}
-      physics: {}
-
-    @errors =
-      topology: {}
-      geometry: {}
-      phase: {}
-      physics: {}
+      topology:
+        height: null
+        width: null
+        depth: null
+        size: null
+        connections: null
+      geometry:
+        poreSeed: 'correlated'
+        lx: null
+        ly: null
+        lz: null
+        poreDiameter: 'logNormal'
+        throatSeed: 'average'
+        throatDiameter: 'logNormal'
+      phase:
+        type: 'air'
+        surfaceTension: null
+        contactAngle: null
+      physics:
+        capillaryPressure: 'purcell'
 
   getInitialState: ->
-    @errors
+    @parameters
 
-  onUpdatePhase: (newPhase) ->
-    @parameters.phase = newPhase
+  onUpdatePhase: (key, value) ->
+    @parameters.phase[key] = value
+    @trigger(@parameters)
 
-  onUpdatePhysics: (newPhysics) ->
-    @parameters.physics = newPhysics ->
+  onUpdatePhysics: (key, value) ->
+    @parameters.physics[key] = value
+    @trigger(@parameters)
 
-  onUpdateTopology: (newTopology) ->
-    @parameters.topology = newTopology
+  onUpdateTopology: (key, value) ->
+    @parameters.topology[key] = value
+    @trigger(@parameters)
 
-  onUpdateGeometry: (newGeometry) ->
-    @parameters.geometry = newGeometry
+  onUpdateGeometry: (key, value) ->
+    @parameters.geometry[key] = value
+    @trigger(@parameters)
 
   onValidate: ->
     result = Joi.validate(@parameters, @schema, {abortEarly: false})
-    _.each(result.error.details, (d) => _.set(@errors, d.path, d.message))
-    @trigger(@errors)
+    _.each(result.error.details, (d) =>
+      _.set(@parameters, d.path, {error: true, message: d.message}))
+    @trigger(@parameters)
 
 module.exports = ParameterStore
