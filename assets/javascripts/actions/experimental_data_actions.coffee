@@ -1,7 +1,7 @@
 Flux = require 'reflux'
 
 AppActions = Flux.createActions([
-  'uploadExperimentalData'
+  'upload'
 ])
 
 module.exports = AppActions

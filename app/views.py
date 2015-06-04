@@ -1,6 +1,7 @@
 from flask import render_template, request
 from app import application
 from app.lib import distribution as dist
+import json
 
 @application.route('/', methods=['GET'])
 def index():
@@ -12,5 +13,6 @@ def sizer():
 
 @application.route('/sizer/distribution', methods=['GET'])
 def distribution():
-  toplogy = request.args.get
-  return
+  query = json.loads(request.args.get('query'))
+  result = dist(query)
+  return json.dumps(result)

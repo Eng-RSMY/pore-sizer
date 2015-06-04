@@ -1,18 +1,20 @@
 Flux = require 'reflux'
 React = require 'react'
-AppStore = require './stores/app_store'
-AppActions = require './actions/app_actions'
 GraphPanel = require './components/graph_panel'
 PhasePanel = require './components/phase_panel'
+ResultsStore = require './stores/results_store'
 PhysicsPanel = require './components/physics_panel'
 TopologyPanel = require './components/topology_panel'
 GeometryPanel = require './components/geometry_panel'
 ParameterStore = require './stores/parameter_store'
 ParameterActions = require './actions/parameter_actions'
+ExperimentalDataStore = require './stores/experimental_data_store'
+ExperimentalDataActions = require './actions/experimental_data_actions'
 
 PoreSizer = React.createClass
   mixins: [
-    Flux.connect(AppStore, 'experimentalData')
+    Flux.connect(ExperimentalDataStore, 'experimentalData')
+    Flux.connect(ResultsStore, 'results')
     Flux.connect(ParameterStore, 'parameters')
   ]
 
@@ -28,7 +30,7 @@ PoreSizer = React.createClass
 
         <div className='ui teal button' onClick={ParameterActions.validate}>Run</div>
       </div>
-      <GraphPanel experimentalData={@state.experimentalData} />
+      <GraphPanel experimentalData={@state.experimentalData} results={@state.results}/>
       <div className='two column equal height row'>
         <TopologyPanel {...@state.parameters.topology} />
         <GeometryPanel {...@state.parameters.geometry} />
@@ -41,6 +43,6 @@ PoreSizer = React.createClass
 
   _onUploadExperimentalData: (evt) ->
     file = evt.target.files[0]
-    AppActions.uploadExperimentalData(file)
+    ExperimentalDataActions.upload(file)
 
 module.exports = PoreSizer

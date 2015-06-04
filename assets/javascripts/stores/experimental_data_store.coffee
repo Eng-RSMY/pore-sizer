@@ -1,15 +1,11 @@
 Flux = require 'reflux'
-AppActions = require '../actions/app_actions'
-ParameterStore = require './parameter_store'
+ExperimentalDataActions = require '../actions/experimental_data_actions'
 
-AppStore = Flux.createStore
-  listenables: AppActions
+ExperimentalDataStore = Flux.createStore
+  listenables: ExperimentalDataActions
 
   init: ->
     @experimentalData = []
-    @results = []
-
-    @listenTo(ParameterStore, @onValidatedInput)
 
     @PARSER_SETTINGS =
       dynamicTyping: true
@@ -23,7 +19,4 @@ AppStore = Flux.createStore
   onUploadExperimentalData: (file) ->
     Papa.parse(file, @PARSER_SETTINGS)
 
-  onValidatedInput: (parameters) ->
-
-
-module.exports = AppStore
+module.exports = ExperimentalDataStore
