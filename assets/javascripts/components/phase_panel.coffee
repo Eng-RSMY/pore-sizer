@@ -38,6 +38,7 @@ PhasePanel = React.createClass
     </div>
 
   _onChange: (evt) ->
-    updatePhase(evt.target.name, evt.target.value)
+    value = if evt.target.value == '' then null else evt.target.value
+    updatePhase(evt.target.name, value)
 
 module.exports = PhasePanel

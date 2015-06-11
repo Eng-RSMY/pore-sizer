@@ -12,23 +12,23 @@ ParameterStore = Flux.createStore
     @schema = schema
     @parameters =
       topology:
-        height: null
-        width: null
-        depth: null
-        size: null
-        connections: null
+        height: 10
+        width: 10
+        depth: 10
+        size: 100
+        connections: 6
       geometry:
         poreSeed: 'correlated'
-        lx: null
-        ly: null
-        lz: null
-        poreDiameter: 'logNormal'
+        lx: 1
+        ly: 1
+        lz: 1
+        poreDiameter: 'weibull'
         throatSeed: 'average'
-        throatDiameter: 'logNormal'
+        throatDiameter: 'weibull'
       phase:
-        type: 'air'
-        surfaceTension: null
-        contactAngle: null
+        type: 'custom'
+        surfaceTension: 10
+        contactAngle: 10
       physics:
         capillaryPressure: 'purcell'
 

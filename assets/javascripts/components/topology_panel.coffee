@@ -39,6 +39,7 @@ TopologyPanel = React.createClass
     </div>
 
   _onChange: (evt) ->
-    updateTopology(evt.target.name, evt.target.value)
+    value = if evt.target.value == '' then null else evt.target.value
+    updateTopology(evt.target.name, value)
 
 module.exports = TopologyPanel

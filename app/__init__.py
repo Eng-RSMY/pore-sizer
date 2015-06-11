@@ -5,6 +5,7 @@ APP_DIR = path.abspath(path.dirname(path.realpath(__file__)))
 STATIC_DIR = path.join(APP_DIR, '..', 'static')
 
 application = Flask(__name__)
+application.debug = True
 
 @application.route('/static/<file>')
 def send_static(file):

@@ -74,6 +74,7 @@ GeometryPanel = React.createClass
     </div>
 
   _onChange: (evt) ->
-    updateGeometry(evt.target.name, evt.target.value)
+    value = if evt.target.value == '' then null else evt.target.value
+    updateGeometry(evt.target.name, value)
 
 module.exports = GeometryPanel

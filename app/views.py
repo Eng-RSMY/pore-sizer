@@ -14,5 +14,5 @@ def sizer():
 @application.route('/sizer/distribution', methods=['GET'])
 def distribution():
   query = json.loads(request.args.get('query'))
-  result = dist(query)
+  result = dist.simulation(query)
   return json.dumps(result)
