@@ -3,6 +3,7 @@ Joi = require 'joi'
 Flux = require 'reflux'
 schema = require '../lib/schema'
 ResultsActions = require '../actions/results_actions'
+Transformations = require '../lib/transformations'
 ParameterActions = require '../actions/parameter_actions'
 
 ParameterStore = Flux.createStore
@@ -12,23 +13,23 @@ ParameterStore = Flux.createStore
     @schema = schema
     @parameters =
       topology:
-        height: 10
-        width: 10
-        depth: 10
-        size: 100
-        connections: 6
+        height: null
+        width: null
+        depth: null
+        size: null
+        connections: null
       geometry:
         poreSeed: 'correlated'
-        lx: 1
-        ly: 1
-        lz: 1
+        lx: null
+        ly: null
+        lz: null
         poreDiameter: 'weibull'
         throatSeed: 'average'
         throatDiameter: 'weibull'
       phase:
         type: 'custom'
-        surfaceTension: 10
-        contactAngle: 10
+        surfaceTension: null
+        contactAngle: null
       physics:
         capillaryPressure: 'purcell'
 
@@ -36,7 +37,7 @@ ParameterStore = Flux.createStore
     @parameters
 
   onUpdatePhase: (key, value) ->
-    @parameters.phase[key] = value
+    @parameters.phase[key] = Transformations.phase[key](value)
     @trigger(@parameters)
 
   onUpdatePhysics: (key, value) ->
@@ -44,11 +45,11 @@ ParameterStore = Flux.createStore
     @trigger(@parameters)
 
   onUpdateTopology: (key, value) ->
-    @parameters.topology[key] = value
+    @parameters.topology[key] = Transformations.topology[key](value)
     @trigger(@parameters)
 
   onUpdateGeometry: (key, value) ->
-    @parameters.geometry[key] = value
+    @parameters.geometry[key] = Transformations.geometry[key](value)
     @trigger(@parameters)
 
   onValidate: ->

@@ -17,6 +17,13 @@ module.exports = class LineGraph
       .append('g')
         .attr('transform', "translate(#{@MARGIN.left}, #{@MARGIN.top})")
 
+    @xAxis = @svg.append('g')
+      .classed(x: true, axis: true)
+      .attr('transform', "translate(0, #{@graphHeight})")
+
+    @yAxis = @svg.append('g')
+      .classed(y: true, axis: true)
+
     @_render()
 
   update: (newData) ->
@@ -24,36 +31,27 @@ module.exports = class LineGraph
     @_calculateScales()
     @_buildAxes()
     @_buildLine()
-
-    @svg.select('.x.axis')
-      .transition()
-      .call(@_xAxis)
-    @svg.select('.y.axis')
-      .transition()
-      .call(@_yAxis)
-    @svg.select('.line')
-      .datum(@data)
-      .transition()
-      .attr('d', @line)
+    @_render()
 
   _render: ->
     @_calculateScales()
     @_buildAxes()
     @_buildLine()
 
-    @svg.append('g')
-      .classed(x: true, axis: true)
-      .attr('transform', "translate(0, #{@graphHeight})")
-      .call(@_xAxis)
+    @xAxis.transition().call(@_xAxis)
+    @yAxis.transition().call(@_yAxis)
 
-    @svg.append('g')
-      .classed(y: true, axis: true)
-      .call(@_yAxis)
-
-    @svg.append('path')
-      .datum(@data)
+    @series = @svg.selectAll('.line').data(@data)
       .classed(line: true)
-      .attr('d', @line)
+
+    @series.transition()
+      .attr('d', (d) => @line(d.dataset))
+
+    @newSeries = @series.enter()
+      .append('path')
+      .classed(line: true)
+      .transition()
+      .attr('d', (d) => @line(d.dataset))
 
   _calculateDimensions: ->
     @_clientRect = d3.select(@selector).node().getBoundingClientRect()
@@ -63,8 +61,11 @@ module.exports = class LineGraph
     @graphHeight = @height - (@MARGIN.top + @MARGIN.bottom)
 
   _calculateScales: ->
-    xMax = if @data.length > 0 then d3.max(@data, (d) -> d[0]) else @graphWidth
-    yMax = if @data.length > 0 then d3.max(@data, (d) -> d[1]) else @graphHeight
+    xValues = []
+    for series in @data
+      xValues = xValues.concat(series.dataset.map (d) -> d[0])
+    xMax = d3.max(xValues)
+    yMax = 1
 
     @_xScale = d3.scale.linear()
       .domain([0, xMax])

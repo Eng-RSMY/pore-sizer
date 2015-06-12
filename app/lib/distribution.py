@@ -6,6 +6,8 @@ from OpenPNM.Geometry import GenericGeometry
 from OpenPNM.Algorithms import OrdinaryPercolation
 from OpenPNM.Geometry import models as gm
 from OpenPNM.Physics import models as pm
+import scipy as sp
+from numpy import dstack
 
 controller = Controller()
 
@@ -54,7 +56,20 @@ def simulation(params):
                                   defending_phase=defending_phase)
 
   algorithm.run(inlets=network.pores('top'))
-  return algorithm['pore.inv_Pc'].tolist()
+  return _transform_data(algorithm).tolist()
+
+def _transform_data(algorithm):
+  pore_invasion_pressures = sp.unique(algorithm['pore.inv_Pc'])
+  invaded_volume_fraction = sp.zeros_like(pore_invasion_pressures)
+  pores = algorithm._net.pores(labels='all')
+  pore_volumes = algorithm._net['pore.volume']
+  total_pore_volume = sum(pore_volumes)
+
+  for i, pressure in enumerate(pore_invasion_pressures):
+    invaded_pores = pore_volumes[algorithm._p_inv[pores] <= pressure]
+    invaded_volume_fraction[i] = sum(invaded_pores) / total_pore_volume
+
+  return dstack((pore_invasion_pressures, invaded_volume_fraction))[0]
 
 def _pore_seed_model(geo):
   model = {

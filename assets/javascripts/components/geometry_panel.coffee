@@ -62,7 +62,7 @@ GeometryPanel = React.createClass
         <div className='field'>
           <div className='field'>
             <label>Throat Diameter</label>
-            <select name='throatDiameter' name={@props.throatDiameter} className='ui dropdown'>
+            <select name='throatDiameter' value={@props.throatDiameter} className='ui dropdown'>
               <option value='logNormal'>Log Normal</option>
               <option value='normal'>Normal</option>
               <option value='random'>Random</option>

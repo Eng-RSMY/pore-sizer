@@ -16,11 +16,10 @@ ResultsStore = Flux.createStore
       .query(query: JSON.stringify(parameters))
       .set('Accept', 'application/json')
       .end (err, res) =>
-        debugger
         if err?
           return
         else
-          @results = res.body
+          @results = JSON.parse(res.text).result
           @trigger(@results)
 
 module.exports = ResultsStore

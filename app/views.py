@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, Response
 from app import application
 from app.lib import distribution as dist
 import json
@@ -14,5 +14,7 @@ def sizer():
 @application.route('/sizer/distribution', methods=['GET'])
 def distribution():
   query = json.loads(request.args.get('query'))
-  result = dist.simulation(query)
-  return json.dumps(result)
+  result = {
+    'result': dist.simulation(query)
+  }
+  return Response(json.dumps(result), mimetype='text/json')

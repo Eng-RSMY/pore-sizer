@@ -6,6 +6,7 @@ LineGraph = require './line_graph'
 GraphPanel = React.createClass
   propTypes:
     experimentalData: React.PropTypes.array
+    results: React.PropTypes.array
 
   getInitialState: ->
     lineGraph: null
@@ -24,6 +25,9 @@ GraphPanel = React.createClass
     @state.lineGraph = new LineGraph('#lineGraph', [])
 
   componentDidUpdate: ->
-    @state.lineGraph.update(@props.experimentalData)
+    data = [
+      {name: 'simulationData', dataset: @props.results}
+    ]
+    @state.lineGraph.update(data)
 
 module.exports = GraphPanel
