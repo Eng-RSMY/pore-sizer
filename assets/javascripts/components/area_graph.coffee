@@ -1,7 +1,7 @@
 d3 = require 'd3'
 colors = require '../lib/colors'
 
-module.exports = class LineGraph
+module.exports = class AreaGraph
   MARGIN:
     top: 20
     bottom: 20
@@ -23,7 +23,7 @@ module.exports = class LineGraph
       .attr('transform', "translate(0, #{@graphHeight})")
 
     @xAxis.append('text')
-      .text('Invasion Pressure')
+      .text('Quantity')
       .attr('text-anchor', 'end')
       .attr('transform', "translate(#{@graphWidth}, -5)")
 
@@ -31,7 +31,7 @@ module.exports = class LineGraph
         .classed(y: true, axis: true)
 
     @yAxis.append('text')
-      .text('Volume Fraction')
+      .text('Pore Size')
       .attr('text-anchor', 'end')
       .attr('y', 6)
       .attr('dy', '.71em')
@@ -43,25 +43,40 @@ module.exports = class LineGraph
     @data = newData
     @_calculateScales()
     @_buildAxes()
+    @_buildArea()
     @_buildLine()
     @_render()
 
   _render: ->
     @_calculateScales()
     @_buildAxes()
-    @_buildLine()
+    @_buildArea()
 
     @xAxis.transition().call(@_xAxis)
     @yAxis.transition().call(@_yAxis)
 
-    @series = @svg.selectAll('.line').data(@data)
+    @series = @svg.selectAll('.series').data(@data)
 
-    @series.transition()
+    @series.select('.area')
+      .transition()
+      .attr('d', (d) => @area(d.dataset))
+
+    @series.select('.line')
+      .transition()
       .attr('d', (d) => @line(d.dataset))
-      .attr('stroke', (_, i) => @_colorScale(i))
 
     @newSeries = @series.enter()
-      .append('path')
+      .append('g')
+      .classed(series: true)
+
+    @newSeries.append('path')
+      .classed(area: true)
+      .transition()
+      .attr('d', (d) => @area(d.dataset))
+      .attr('fill', (_, i) => @_colorScale(i))
+      .attr('opacity', 0.5)
+
+    @newSeries.append('path')
       .classed(line: true)
       .transition()
       .attr('d', (d) => @line(d.dataset))
@@ -92,6 +107,12 @@ module.exports = class LineGraph
     @_colorScale = d3.scale.ordinal()
       .domain(Object.keys(@data).length)
       .range(colors)
+
+  _buildArea: ->
+    @area = d3.svg.area()
+      .x((d) => @_xScale(d[0]))
+      .y0(@graphHeight)
+      .y1((d) => @_yScale(d[1]))
 
   _buildLine: ->
     @line = d3.svg.line()
