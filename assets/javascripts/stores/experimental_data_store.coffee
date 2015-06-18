@@ -1,4 +1,5 @@
 Flux = require 'reflux'
+Papa = require 'papaparse'
 ExperimentalDataActions = require '../actions/experimental_data_actions'
 
 ExperimentalDataStore = Flux.createStore
@@ -16,7 +17,7 @@ ExperimentalDataStore = Flux.createStore
   getInitialState: ->
     @experimentalData
 
-  onUploadExperimentalData: (file) ->
+  onUpload: (file) ->
     Papa.parse(file, @PARSER_SETTINGS)
 
 module.exports = ExperimentalDataStore

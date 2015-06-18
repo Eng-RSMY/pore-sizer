@@ -22,15 +22,26 @@ GraphPanel = React.createClass
     </div>
 
   componentDidMount: ->
-    @state.lineGraph = new LineGraph('#lineGraph', [])
-    @state.areaGraph = new AreaGraph('#areaGraph', [])
+    @state.lineGraph = new LineGraph('#lineGraph', [{
+      name: 'experimentalData'
+      dataset: []
+    }])
+    
+    @state.areaGraph = new AreaGraph('#areaGraph', [{
+      name: 'experimentalData',
+      dataset: []
+    }])
 
   componentDidUpdate: ->
-    data = [
+    invasionPressureData = [
       {name: 'experimentalData', dataset: @props.experimentalData}
-      {name: 'simulationData', dataset: @props.results}
+      {name: 'simulationData', dataset: @props.results.invasion_pressures}
     ]
-    @state.lineGraph.update(data)
-    @state.areaGraph.update(data)
+    poreVolumeData = [
+      {name: 'poreVolume', dataset: @props.results.pore_volumes}
+    ]
+
+    @state.lineGraph.update(invasionPressureData)
+    @state.areaGraph.update(poreVolumeData)
 
 module.exports = GraphPanel

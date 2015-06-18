@@ -8,13 +8,18 @@ module.exports = class AreaGraph
     left: 30
     right: 20
 
+  TICK_COUNT: 5
+
   constructor: (@selector, @data) ->
     @_calculateDimensions()
+    @_transformData()
     @svg = d3.select(@selector)
       .append('svg')
         .classed(graph: true)
         .attr('width', @width)
         .attr('height', @height)
+        .attr('viewBox', "0 0 #{@width} #{@height}")
+        .attr('preserveAspectRatio', 'xMinYMid')
       .append('g')
         .attr('transform', "translate(#{@MARGIN.left}, #{@MARGIN.top})")
 
@@ -41,6 +46,7 @@ module.exports = class AreaGraph
 
   update: (newData) ->
     @data = newData
+    @_transformData()
     @_calculateScales()
     @_buildAxes()
     @_buildArea()
@@ -82,6 +88,11 @@ module.exports = class AreaGraph
       .attr('d', (d) => @line(d.dataset))
       .attr('stroke', (_, i) => @_colorScale(i))
 
+  _transformData: ->
+    @histo = for series in @data
+      name: series.name
+      dataset: d3.layout.histogram().bins(@TICK_COUNT)(series.dataset)
+
   _calculateDimensions: ->
     @_clientRect = d3.select(@selector).node().getBoundingClientRect()
     @width = @_clientRect.width
@@ -94,7 +105,7 @@ module.exports = class AreaGraph
     for series in @data
       xValues = xValues.concat(series.dataset.map (d) -> d[0])
     xMax = d3.max(xValues)
-    yMax = 1
+    yMax = d3.max(@histo, (d) -> d.y)
 
     @_xScale = d3.scale.linear()
       .domain([0, xMax])

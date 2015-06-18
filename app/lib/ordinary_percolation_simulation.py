@@ -11,7 +11,7 @@ from numpy import dstack
 
 controller = Controller()
 
-def simulation(params):
+def run(params):
   controller.clear()
 
   topo = params['topology']
@@ -56,7 +56,11 @@ def simulation(params):
                                   defending_phase=defending_phase)
 
   algorithm.run(inlets=network.pores('top'))
-  return _transform_data(algorithm).tolist()
+
+  return {
+    'invasion_pressures': _transform_data(algorithm).tolist(),
+    'pore_volumes': geometry['pore.volume'].tolist()
+  }
 
 def _transform_data(algorithm):
   pore_invasion_pressures = sp.unique(algorithm['pore.inv_Pc'])

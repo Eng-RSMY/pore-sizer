@@ -23,26 +23,20 @@ dependencies.forEach (dep) ->
   appBundle.external(dep)
   vendorBundle.require(dep, expose: dep)
 
-rebundle = ->
-  watchify(appBundle)
-    .bundle()
-    .on('error', (err) -> log(err))
+watchedApp = watchify(appBundle)
+watchedApp.on('update', -> rebundle(watchedApp))
+watchedApp.on('log', log)
+
+rebundle = (b) ->
+  b.bundle()
+    .on('error', (err) => log(err))
     .pipe(source('app.js'))
     .pipe(buffer())
     .pipe(gulp.dest('./static'))
 
-gulp.task 'js', ->
-  appBundle
-    .bundle()
-    .pipe(source('app.js'))
-    .pipe(buffer())
-    .pipe(gulp.dest('./static'))
+gulp.task('js', -> rebundle(appBundle))
 
-gulp.task 'js:watchify', ->
-  watchify(appBundle)
-    .on('update', rebundle)
-    .on('log', (message) -> log("[Watchify] #{message}"))
-  rebundle()
+gulp.task('js:watchify', -> rebundle(watchedApp))
 
 gulp.task 'js:vendor', ->
   vendorBundle

@@ -31,12 +31,12 @@ PoreSizer = React.createClass
         <div className='ui teal button' onClick={ParameterActions.validate}>Run</div>
       </div>
       <GraphPanel experimentalData={@state.experimentalData} results={@state.results}/>
-      <div className='two column equal height row'>
+      <div className='eight wide column'>
         <TopologyPanel {...@state.parameters.topology} />
-        <GeometryPanel {...@state.parameters.geometry} />
-      </div>
-      <div className='two column equal height row'>
         <PhasePanel {...@state.parameters.phase} />
+      </div>
+      <div className='eight wide column'>
+        <GeometryPanel {...@state.parameters.geometry} />
         <PhysicsPanel {...@state.parameters.physics} />
       </div>
     </div>

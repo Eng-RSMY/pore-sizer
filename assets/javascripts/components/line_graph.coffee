@@ -15,6 +15,8 @@ module.exports = class LineGraph
         .classed(graph: true)
         .attr('width', @width)
         .attr('height', @height)
+        .attr('viewBox', "0 0 #{@width} #{@height}")
+        .attr('preserveAspectRatio', 'xMinYMid')
       .append('g')
         .attr('transform', "translate(#{@MARGIN.left}, #{@MARGIN.top})")
 
