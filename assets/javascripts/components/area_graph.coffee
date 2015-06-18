@@ -28,7 +28,7 @@ module.exports = class AreaGraph
       .attr('transform', "translate(0, #{@graphHeight})")
 
     @xAxis.append('text')
-      .text('Quantity')
+      .text('Pore Size')
       .attr('text-anchor', 'end')
       .attr('transform', "translate(#{@graphWidth}, -5)")
 
@@ -36,7 +36,7 @@ module.exports = class AreaGraph
         .classed(y: true, axis: true)
 
     @yAxis.append('text')
-      .text('Pore Size')
+      .text('Quantity')
       .attr('text-anchor', 'end')
       .attr('y', 6)
       .attr('dy', '.71em')
@@ -57,6 +57,7 @@ module.exports = class AreaGraph
     @_calculateScales()
     @_buildAxes()
     @_buildArea()
+    @_buildLine()
 
     @xAxis.transition().call(@_xAxis)
     @yAxis.transition().call(@_yAxis)
@@ -65,11 +66,11 @@ module.exports = class AreaGraph
 
     @series.select('.area')
       .transition()
-      .attr('d', (d) => @area(d.dataset))
+      .attr('d', (d) => @area(d.histo))
 
     @series.select('.line')
       .transition()
-      .attr('d', (d) => @line(d.dataset))
+      .attr('d', (d) => @line(d.histo))
 
     @newSeries = @series.enter()
       .append('g')
@@ -89,9 +90,8 @@ module.exports = class AreaGraph
       .attr('stroke', (_, i) => @_colorScale(i))
 
   _transformData: ->
-    @histo = for series in @data
-      name: series.name
-      dataset: d3.layout.histogram().bins(@TICK_COUNT)(series.dataset)
+    for series in @data
+      series.histo = d3.layout.histogram().bins(@TICK_COUNT)(series.dataset)
 
   _calculateDimensions: ->
     @_clientRect = d3.select(@selector).node().getBoundingClientRect()
@@ -102,10 +102,14 @@ module.exports = class AreaGraph
 
   _calculateScales: ->
     xValues = []
+    yValues = []
+
     for series in @data
-      xValues = xValues.concat(series.dataset.map (d) -> d[0])
+      xValues = xValues.concat(series.dataset)
+      yValues = yValues.concat(series.histo.map (d) -> d.y)
+
     xMax = d3.max(xValues)
-    yMax = d3.max(@histo, (d) -> d.y)
+    yMax = d3.max(yValues)
 
     @_xScale = d3.scale.linear()
       .domain([0, xMax])
@@ -121,18 +125,19 @@ module.exports = class AreaGraph
 
   _buildArea: ->
     @area = d3.svg.area()
-      .x((d) => @_xScale(d[0]))
+      .x((d) => @_xScale(d.x))
       .y0(@graphHeight)
-      .y1((d) => @_yScale(d[1]))
+      .y1((d) => @_yScale(d.y))
 
   _buildLine: ->
     @line = d3.svg.line()
-      .x((d) => @_xScale(d[0]))
-      .y((d) => @_yScale(d[1]))
+      .x((d) => @_xScale(d.x))
+      .y((d) => @_yScale(d.y))
 
   _buildAxes: ->
     @_xAxis = d3.svg.axis()
       .scale(@_xScale)
+      .ticks(@TICK_COUNT)
       .orient('bottom')
 
     @_yAxis = d3.svg.axis()

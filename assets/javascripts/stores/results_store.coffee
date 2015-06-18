@@ -19,8 +19,7 @@ ResultsStore = Flux.createStore
         if err?
           return
         else
-          debugger
-          @results = JSON.parse(res.text).result
+          @results = res.body.result
           @trigger(@results)
 
 module.exports = ResultsStore
