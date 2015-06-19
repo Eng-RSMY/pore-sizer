@@ -30,9 +30,17 @@ TopologyPanel = React.createClass
             <input name='size' type='text' placeholder='Ex. 100' />
           </div>
 
-          <div className={if @props.connections?.error then 'field error' else 'field'}>
-            <label>Connections</label>
-            <input name='connections' type='text' placeholder='Ex. 6' />
+          <div className='field'>
+            <label>Connectivity</label>
+            <select name='connectivity' value={@props.connectivity} className='ui dropdown'>
+              <option value='6'>6: Faces only</option>
+              <option value='8'>8: Corners only</option>
+              <option value='12'>12: Edges Only</option>
+              <option value='14'>14: Faces and Corners</option>
+              <option value='18'>18: Faces and Edges</option>
+              <option value='20'>20: Edges and Corners</option>
+              <option value='26'>26: Faces, Edges and Corners</option>
+            </select>
           </div>
         </div>
       </div>

@@ -1,19 +1,11 @@
-_ = require 'lodash'
 React = require 'react'
 AreaGraph = require './area_graph'
 LineGraph = require './line_graph'
 
 GraphPanel = React.createClass
-  propTypes:
-    experimentalData: React.PropTypes.array
-    results: React.PropTypes.array
-
   getInitialState: ->
     lineGraph: null
     histrogram: null
-
-  shouldComponentUpdate: (nextProps, nextState) ->
-    !_.isEqual(@props, nextProps)
 
   render: ->
     <div className='two column row'>
@@ -26,7 +18,7 @@ GraphPanel = React.createClass
       name: 'experimentalData'
       dataset: []
     }])
-    
+
     @state.areaGraph = new AreaGraph('#areaGraph', [{
       name: 'experimentalData',
       dataset: []

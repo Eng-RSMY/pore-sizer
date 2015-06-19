@@ -1,7 +1,6 @@
 from flask import render_template, request, Response
 from app import application
 from app.lib import ordinary_percolation_simulation as ops
-from app.lib import size_distribution as dist
 import json
 
 @application.route('/', methods=['GET'])

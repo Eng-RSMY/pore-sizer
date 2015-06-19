@@ -6,7 +6,7 @@ module.exports = Joi.object().keys
     width: Joi.number().integer().required()
     depth: Joi.number().integer().required()
     size: Joi.number().integer().required()
-    connections: Joi.number().integer().required()
+    connectivity: Joi.number().integer().required()
 
   geometry:
     poreSeed: Joi.string().required()

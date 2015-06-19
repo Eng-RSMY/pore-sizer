@@ -17,7 +17,7 @@ ParameterStore = Flux.createStore
         width: 10
         depth: 10
         size: 10
-        connections: 10
+        connectivity: 6
       geometry:
         poreSeed: 'correlated'
         lx: 1

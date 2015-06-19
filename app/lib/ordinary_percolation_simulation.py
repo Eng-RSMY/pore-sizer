@@ -19,7 +19,8 @@ def run(params):
   phs = params['phase']
   phys = params['physics']
 
-  network = Cubic(shape=[topo['height'], topo['width'], topo['depth']])
+  network = Cubic(shape=[topo['height'], topo['width'], topo['depth']],
+                  connectivity=topo['connectivity'])
 
   geometry = GenericGeometry(network=network,
                              pores=network.pores(),

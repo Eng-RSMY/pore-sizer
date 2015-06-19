@@ -4,7 +4,7 @@ module.exports =
     width: (d) -> parseInt(d)
     depth: (d) -> parseInt(d)
     size: (d) -> parseInt(d)
-    connections: (d) -> parseInt(d)
+    connectivity: (d) -> parseInt(d)
   geometry:
     lx: (d) -> parseInt(d)
     ly: (d) -> parseInt(d)
