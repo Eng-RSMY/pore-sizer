@@ -1,0 +1,31 @@
+<h4 class='ui top attached header'>Topology</h4>
+<div class='ui fluid bottom attached segment'>
+  <div class='field'>
+    {{ topology.dimensions.label }}
+    <div class='three fields'>
+      <div class='field'>
+        {{ topology.dimensions.height(placeholder=topology.dimensions.height.label.text) }}
+      </div>
+
+      <div class='field'>
+        {{ topology.dimensions.width(placeholder=topology.dimensions.width.label.text) }}
+      </div>
+
+      <div class='field'>
+        {{ topology.dimensions.depth(placeholder=topology.dimensions.depth.label.text) }}
+      </div>
+    </div>
+  </div>
+
+  <div class='two fields'>
+    <div class='field'>
+      {{ topology.size.label }}
+      {{ topology.size }}
+    </div>
+
+    <div class='field'>
+      {{ topology.connectivity.label }}
+      {{ topology.connectivity(class_='ui dropdown') }}
+    </div>
+  </div>
+</div>

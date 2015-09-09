@@ -1,0 +1,33 @@
+<h4 class='ui top attached header'>Geometry</h4>
+<div class='ui fluid bottom attached segment'>
+
+  <div class='field'>
+    <div class='field'>
+      {{ geometry.pore_seed.label }}
+      {{ geometry.pore_seed(class_='ui dropdown') }}
+    </div>
+  </div>
+  <div class='field'>
+    {{ geometry.correlation_distances.label }}
+    <div class='three fields'>
+      <div class='field'>
+        {{ geometry.correlation_distances.lx(placeholder=geometry.correlation_distances.lx.label.text) }}
+      </div>
+
+      <div class='field'>
+        {{ geometry.correlation_distances.ly(placeholder=geometry.correlation_distances.ly.label.text) }}
+      </div>
+
+      <div class='field'>
+        {{ geometry.correlation_distances.lz(placeholder=geometry.correlation_distances.lz.label.text) }}
+      </div>
+    </div>
+  </div>
+
+  <div class='field'>
+    <div class='field'>
+      {{ geometry.throat_seed.label }}
+      {{ geometry.throat_seed(class_='ui dropdown') }}
+    </div>
+  </div>
+</div>

@@ -1,7 +1,8 @@
+import json
 from flask import render_template, request, Response
 from app import application
 from app.lib import ordinary_percolation_simulation as ops
-import json
+from app.forms import QueryForm
 
 @application.route('/', methods=['GET'])
 def index():
@@ -9,7 +10,10 @@ def index():
 
 @application.route('/sizer', methods=['GET'])
 def sizer():
-  return render_template('sizer.html')
+  form = QueryForm()
+  return render_template('sizer.html', topology=form.topology,
+                         geometry=form.geometry, phase=form.phase,
+                         physics=form.physics)
 
 @application.route('/sizer/op_simulation', methods=['GET'])
 def op_simulation():
