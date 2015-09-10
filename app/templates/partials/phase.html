@@ -4,14 +4,14 @@
     <div class='field'>
       {{ phase.surface_tension.label }}
       <div class='ui right labeled input'>
-        {{ phase.surface_tension }}
+        {{ phase.surface_tension(bind='phase.surfaceTension') }}
         <div class='ui label'>N/m</div>
       </div>
     </div>
     <div class='field'>
       {{ phase.contact_angle.label }}
       <div class='ui right labeled input'>
-        {{ phase.contact_angle }}
+        {{ phase.contact_angle(bind='phase.contactAngle') }}
         <div class='ui label'>degrees</div>
       </div>
     </div>

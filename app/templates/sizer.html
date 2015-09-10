@@ -1,27 +1,34 @@
 <!DOCTYPE html>
 <html lang='en'>
   <head>
-    <title></title>
-    <link rel='stylesheet' href='{{ url_for("static", filename="app.css") }}'>
-    <script src='{{ url_for("static", filename="vendor.js") }}'></script>
-    <script src='{{ url_for("static", filename="app.js") }}'></script>
-    <style>
-      #fileUpload {
-        display: none;
-      }
-    </style>
+    <title>Pore Sizer</title>
+    {% assets 'vendor_stylesheet' %}
+        <link rel='stylesheet' href='{{ ASSET_URL }}'>
+    {% endassets %}
+    {% assets 'app_stylesheet' %}
+        <link rel='stylesheet' href='{{ ASSET_URL }}'>
+    {% endassets %}
+
+    <script src='//code.jquery.com/jquery-1.11.3.min.js'></script>
+    {% assets 'vendor_javascript' %}
+        <script type='text/javascript' src='{{ ASSET_URL }}'></script>
+    {% endassets %}
+    {% assets 'app_javascript' %}
+        <script type='text/javascript' src='{{ ASSET_URL }}'></script>
+    {% endassets %}
+    <script type='text/javascript'>
+      $(function() {
+        Twine.reset(PoreSizer).bind().refresh();
+      });
+    </script>
   </head>
   <body>
     <div class='ui page grid'>
+      <div class='row'></div>
       <div class='row'>
-        <label htmlFor='fileUpload' class='ui icon button'>
-          <i class='file icon'></i>
-          Upload a CSV file
-        </label>
-        <input type='file' id='fileUpload' />
-        <div class='ui teal button'>Run</div>
+        <div id='poreFlooding' class='ui eight wide column'></div>
+        <div id='poreDistribution' class='ui eight wide column'></div>
       </div>
-
       <div class='row'>
         <div class='ui eight wide column grid'>
           <div class='ui sixteen wide form'>
@@ -29,6 +36,18 @@
           </div>
           <div class='ui sixteen wide column form'>
             {% include 'partials/phase.html' %}
+          </div>
+          <div class='ui sixteen wide'>
+            <label for='fileUpload' class='ui icon button'>
+              <i class='file icon'></i>
+              Upload a CSV file
+            </label>
+            <label for='fileUpload' class='ui icon button'>
+              <i class='file icon'></i>
+              Export Results as CSV
+            </label>
+            <input type='file' />
+            <div bind-event-click='validate()' class='ui teal button'>Run</div>
           </div>
         </div>
 

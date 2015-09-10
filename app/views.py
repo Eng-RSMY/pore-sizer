@@ -15,12 +15,18 @@ def sizer():
                          geometry=form.geometry, phase=form.phase,
                          physics=form.physics)
 
-@application.route('/sizer/op_simulation', methods=['GET'])
+@application.route('/sizer/op_simulation', methods=['POST'])
 def op_simulation():
-  query = json.loads(request.args.get('query'))
-  result = {
-    'result': ops.run(query)
-  }
+  query = QueryForm(request)
+  if form.validate():
+    result = {
+      'error': False,
+      'result': ops.run(query)
+    }
+  else:
+    result = {
+      'error', True
+    }
   return Response(json.dumps(result), mimetype='application/json')
 
 @application.route('/sizer/distribution', methods=['GET'])

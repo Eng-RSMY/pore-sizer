@@ -1,14 +1,15 @@
 from flask import Flask, send_from_directory
-from os import path
-
-APP_DIR = path.abspath(path.dirname(path.realpath(__file__)))
-STATIC_DIR = path.join(APP_DIR, '..', 'static')
+from flask.ext.assets import Environment
+from app.assets import *
 
 application = Flask(__name__)
 application.debug = True
 
-@application.route('/static/<file>')
-def send_static(file):
-  return send_from_directory(STATIC_DIR, file)
+assets = Environment(application)
+
+assets.register('vendor_javascript', vendor_javascript)
+assets.register('vendor_stylesheet', vendor_stylesheet)
+assets.register('app_stylesheet', app_stylesheet)
+assets.register('app_javascript', app_javascript)
 
 from app import views
