@@ -18,6 +18,7 @@
     {% endassets %}
     <script type='text/javascript'>
       $(function() {
+        PoreSizer.init();
         Twine.reset(PoreSizer).bind().refresh();
       });
     </script>
@@ -29,14 +30,15 @@
         <div id='poreFlooding' class='ui eight wide column'></div>
         <div id='poreDistribution' class='ui eight wide column'></div>
       </div>
-      <div class='row'>
+      <div class='ui form row' bind-class='{loading: loading}'>
         <div class='ui eight wide column grid'>
-          <div class='ui sixteen wide form'>
+          <div class='ui sixteen wide'>
             {% include 'partials/topology.html' %}
           </div>
-          <div class='ui sixteen wide column form'>
+          <div class='ui sixteen wide column'>
             {% include 'partials/phase.html' %}
           </div>
+          
           <div class='ui sixteen wide'>
             <label for='fileUpload' class='ui icon button'>
               <i class='file icon'></i>

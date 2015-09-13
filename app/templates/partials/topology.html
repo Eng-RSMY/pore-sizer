@@ -3,32 +3,31 @@
   <div class='field'>
     {{ topology.dimensions.label }}
     <div class='three fields'>
-      <div class='field'>
-        {{ topology.dimensions.height(bind='topology.dimensions.height',
-                                      placeholder=topology.dimensions.height.label.text) }}
+      <div class='field' bind-class='{error: evaluateError(this)}'>
+        {{ topology.dimensions.height(**{'bind-event-change': 'onChange(this)',
+                                         'placeholder': topology.dimensions.height.label.text}) }}
+      </div>
+      <div class='field' bind-class='{error: evaluateError(this)}'>
+        {{ topology.dimensions.width(**{'bind-event-change': 'onChange(this)',
+                                        'placeholder': topology.dimensions.width.label.text}) }}
       </div>
 
-      <div class='field'>
-        {{ topology.dimensions.width(bind='topology.dimensions.width',
-                                     placeholder=topology.dimensions.width.label.text) }}
-      </div>
-
-      <div class='field'>
-        {{ topology.dimensions.depth(bind='topology.dimensions.depth',
-                                     placeholder=topology.dimensions.depth.label.text) }}
+      <div class='field' bind-class='{error: evaluateError(this)}'>
+        {{ topology.dimensions.depth(**{'bind-event-change': 'onChange(this)',
+                                        'placeholder': topology.dimensions.depth.label.text}) }}
       </div>
     </div>
   </div>
 
   <div class='two fields'>
-    <div class='field'>
+    <div class='field' bind-class='{error: evaluateError(this)}'>
       {{ topology.size.label }}
-      {{ topology.size(bind='topology.size') }}
+      {{ topology.size(**{'bind-event-change': 'onChange(this)'}) }}
     </div>
 
     <div class='field'>
       {{ topology.connectivity.label }}
-      {{ topology.connectivity(bind='topology.connectivity', class_='ui dropdown') }}
+      {{ topology.connectivity(**{'class_': 'ui dropdown', 'bind-event-change': 'onChange(this)'}) }}
     </div>
   </div>
 </div>

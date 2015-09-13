@@ -4,25 +4,25 @@
   <div class='field'>
     <div class='field'>
       {{ geometry.pore_seed.label }}
-      {{ geometry.pore_seed(class_='ui dropdown', bind='geometry.poreSeed') }}
+      {{ geometry.pore_seed(**{'class_': 'ui dropdown', 'bind-event-change': 'onChange(this)'}) }}
     </div>
   </div>
-  <div class='field'>
+  <div class='field' bind-show='query["geometry-pore_seed"] === "correlated"'>
     {{ geometry.correlation_distances.label }}
     <div class='three fields'>
-      <div class='field'>
-        {{ geometry.correlation_distances.lx(bind='geometry.lx',
-                                             placeholder=geometry.correlation_distances.lx.label.text) }}
+      <div class='field' bind-class='{error: evaluateError(this)}'>
+        {{ geometry.correlation_distances.lx(**{'bind-event-change': 'onChange(this)',
+                                                'placeholder': geometry.correlation_distances.lx.label.text}) }}
       </div>
 
-      <div class='field'>
-        {{ geometry.correlation_distances.ly(bind='geometry.ly',
-                                             placeholder=geometry.correlation_distances.ly.label.text) }}
+      <div class='field' bind-class='{error: evaluateError(this)}'>
+        {{ geometry.correlation_distances.ly(**{'bind-event-change': 'onChange(this)',
+                                                'placeholder': geometry.correlation_distances.ly.label.text}) }}
       </div>
 
-      <div class='field'>
-        {{ geometry.correlation_distances.lz(bind='geometry.lz',
-                                             placeholder=geometry.correlation_distances.lz.label.text) }}
+      <div class='field' bind-class='{error: evaluateError(this)}'>
+        {{ geometry.correlation_distances.lz(**{'bind-event-change': 'onChange(this)',
+                                                'placeholder': geometry.correlation_distances.lz.label.text}) }}
       </div>
     </div>
   </div>
@@ -30,7 +30,7 @@
   <div class='field'>
     <div class='field'>
       {{ geometry.throat_seed.label }}
-      {{ geometry.throat_seed(bind='geometry.throatSeed', class_='ui dropdown') }}
+      {{ geometry.throat_seed(**{'class_': 'ui dropdown', 'bind': 'onChange(this)'}) }}
     </div>
   </div>
 </div>

@@ -10,22 +10,23 @@ def index():
 
 @application.route('/sizer', methods=['GET'])
 def sizer():
-  form = QueryForm()
+  form = QueryForm(csrf_enabled=False)
   return render_template('sizer.html', topology=form.topology,
                          geometry=form.geometry, phase=form.phase,
                          physics=form.physics)
 
 @application.route('/sizer/op_simulation', methods=['POST'])
 def op_simulation():
-  query = QueryForm(request)
-  if form.validate():
+  query = QueryForm(request.form)
+  if query.validate():
     result = {
-      'error': False,
+      'errors': {},
       'result': ops.run(query)
     }
   else:
     result = {
-      'error', True
+      'errors': query.errors,
+      'result': 'There are errors with your query.'
     }
   return Response(json.dumps(result), mimetype='application/json')
 

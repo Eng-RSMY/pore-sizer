@@ -1,17 +1,17 @@
 <h4 class='ui top attached header'>Phase</h4>
 <div class='ui fluid bottom attached segment'>
   <div class='two fields'>
-    <div class='field'>
+    <div class='field' bind-class='{error: evaluateError(this)}'>
       {{ phase.surface_tension.label }}
       <div class='ui right labeled input'>
-        {{ phase.surface_tension(bind='phase.surfaceTension') }}
+        {{ phase.surface_tension(**{'bind-event-change': 'onChange(this)'}) }}
         <div class='ui label'>N/m</div>
       </div>
     </div>
-    <div class='field'>
+    <div class='field' bind-class='{error: evaluateError(this)}'>
       {{ phase.contact_angle.label }}
       <div class='ui right labeled input'>
-        {{ phase.contact_angle(bind='phase.contactAngle') }}
+        {{ phase.contact_angle(**{'bind-event-change': 'onChange(this)'}) }}
         <div class='ui label'>degrees</div>
       </div>
     </div>

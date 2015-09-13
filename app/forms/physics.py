@@ -7,5 +7,5 @@ capillary_pressure_options = [
 ]
 
 class PhysicsForm(Form):
-  capillary_pressure = SelectField('Capillary Pressure', [InputRequired()],
+  capillary_pressure = SelectField('Capillary Pressure',
                                    choices=capillary_pressure_options)

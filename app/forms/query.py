@@ -6,7 +6,7 @@ from .topology import TopologyForm
 from .physics import PhysicsForm
 
 class QueryForm(Form):
-    topology = FormField(TopologyForm)
-    geometry = FormField(GeometryForm)
-    phase = FormField(PhaseForm)
-    physics = FormField(PhysicsForm)
+  topology = FormField(TopologyForm)
+  geometry = FormField(GeometryForm)
+  phase = FormField(PhaseForm)
+  physics = FormField(PhysicsForm)

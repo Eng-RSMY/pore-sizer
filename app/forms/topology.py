@@ -21,5 +21,5 @@ class DimensionsForm(Form):
 class TopologyForm(Form):
   dimensions = FormField(DimensionsForm, 'Dimensions')
   size = IntegerField('Size', [InputRequired()])
-  connectivity = SelectField('Connectivity', [InputRequired()],
+  connectivity = SelectField('Connectivity', coerce=int,
                              choices=connectivity_options)

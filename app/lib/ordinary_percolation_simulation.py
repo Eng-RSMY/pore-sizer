@@ -19,8 +19,8 @@ def run(params):
   phs = params['phase']
   phys = params['physics']
 
-  network = Cubic(shape=[topo['height'], topo['width'], topo['depth']],
-                  connectivity=topo['connectivity'])
+  network = Cubic(shape=list(topo.dimensions.data.values()),
+                  connectivity=topo.connectivity.data)
 
   geometry = GenericGeometry(network=network,
                              pores=network.pores(),
@@ -34,28 +34,16 @@ def run(params):
   geometry.add_model(geometry=geometry, **_throat_volume_model())
 
   invading_phase = GenericPhase(network=network, name='invading')
-  defending_phase = GenericPhase(network=network, name='defending')
-
-  if phs['type'] == 'custom':
-    invading_phase['pore.contact_angle'] = phs['contactAngle']
-    invading_phase['pore.surface_tension'] = phs['surfaceTension']
-    defending_phase['pore.contact_angle'] = phs['contactAngle']
-    defending_phase['pore.surface_tension'] = phs['surfaceTension']
+  invading_phase['pore.contact_angle'] = phs.contact_angle.data
+  invading_phase['pore.surface_tension'] = phs.surface_tension.data
 
   invading_physics = GenericPhysics(network=network,
                                     phase=invading_phase,
                                     geometry=geometry)
-  defending_physics = GenericPhysics(network=network,
-                                     phase=defending_phase,
-                                     geometry=geometry)
 
   invading_physics.add_model(**_capillary_pressure_model(phys))
-  defending_physics.add_model(**_capillary_pressure_model(phys))
 
-  algorithm = OrdinaryPercolation(network=network,
-                                  invading_phase=invading_phase,
-                                  defending_phase=defending_phase)
-
+  algorithm = OrdinaryPercolation(network=network, invading_phase=invading_phase)
   algorithm.run(inlets=network.pores('top'))
 
   return {

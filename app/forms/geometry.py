@@ -20,9 +20,6 @@ class CorrelationDistanceForm(Form):
 
 
 class GeometryForm(Form):
-  pore_seed = SelectField('Pore Seed', [InputRequired()],
-                          choices=pore_seed_options)
-  throat_seed = SelectField('Throat Seed', [InputRequired()],
-                            choices=throat_seed_choices)
-  correlation_distances = FormField(CorrelationDistanceForm,
-                                    'Correlation Distances')
+  pore_seed = SelectField('Pore Seed', choices=pore_seed_options)
+  throat_seed = SelectField('Throat Seed', choices=throat_seed_choices)
+  correlation_distances = FormField(CorrelationDistanceForm,'Correlation Distances')
